@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Regestier";
+}
+
+<h1>Regestier</h1>
+
+<form id="form1" action="~/api/getdemo" method="post">
+    <label for="name">username</label>
+    <input type="text" id="name" name="Name" />
+    <div id="NameMessage"></div>
+    <label for="email">useremail</label>
+    <input type="email" id="email" name="Email" />
+    <label for="age">userage</label>
+    <input type="number" id="age" name="Age" />
+    <input type="file" name="file"/>
+    <button type="submit" id="button1">送出</button>
+</form>
+<div class="alert-light" id="div1"></div>
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+<script>
+    const btn =document.querySelector('#button1');
+    const div =document.querySelector('#div1');
+    const txtName =document.querySelector('#name');
+    //const txtAge = document.querySelector('#age');
+    const nameMessage = document.querySelector('#NameMessage');
+
+        
+        txtName.addEventListener('blur', () => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/CheckAccount');       
+            const formData = new FormData();
+            formData.append('Name', nameInput.value);
+            xhr.send(formData);
+
+            xhr.addEventListener('load', () => {
+                const data = xhr.responseText;
+                nameMessage.innerHTML = data;
+            });
+        });
+
+
+    btn.addEventListener('click',event =>{
+    event.preventDefault();
+
+    const xhr =new XMLHttpRequest();
+            xhr.open('POST', '/api/Regestier');
+    //xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+    //xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
+            const formdata = new FormData(document.querySelector('#form1'));
+            xhr.send(formdata);
+
+    xhr.addEventListener('load',()=>{
+    const data =xhr.responseText;
+    div.innerHTML=data;
+    })
+    })
+
+</script>
+}

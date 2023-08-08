@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "First";
+}
+
+<h1>First</h1>
+<button id="button1" class="btn btn-primary">Click</button>
+<button id="button2" class="btn btn-danger">Cancel</button>
+<img src="~/images/Walk.gif" id="loading" />
+<div class="alert alert-info" id="div1"></div>
+
+@section Styles{
+    <style>
+        #loading {
+            display: none
+        }
+    </style>
+
+}
+
+@section Scripts{
+    <script>
+        const btn = document.querySelector('#button1');
+        const myDiv = document.querySelector('#div1');
+        const img = document.querySelector('#loading');
+        const btnCancel = document.querySelector('#button2');
+        //步驟一
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener('timeout',()=>{
+        myDiv.innerHTML +=`伺服器忙碌中，請稍後`
+        })
+
+        xhr.addEventListener('abort',() =>{
+        myDiv.innerHTML +=`<h3>您停止了程式的執行</h3>`
+        })
+
+        btnCancel.addEventListener('click', () => {
+        xhr.abort();
+        })
+
+        xhr.addEventListener('loadstart',() =>{
+        btn.setAttribute('disabled','disabled')
+        btn.textContent="執行中..."
+            img.style.display = "inline"
+        })
+
+        xhr.addEventListener('loadend',() =>{
+        btn.removeAttribute('disabled');
+        btn.textContent="Click"
+            img.style.display = "none"
+        })
+
+
+        btn.addEventListener('click',()=>{
+            //myDiv.innerHTML = "Button Click"
+          
+            //步驟二對伺服器發出要求(Request)
+            xhr.open('GET', '/api/index');
+            xhr.timeout = 3000;
+            xhr.send();
+        
+
+            //步驟三接收伺服器回傳的資料
+            xhr.addEventListener('load',()=>{
+                    const data =  xhr.responseText
+                    //步驟四讀資料 JSON XML
+                    //步驟五顯示資料
+                myDiv.innerHTML = `<h3>${data}</h3>`
+            })
+          
+
+
+        })
+    </script>
+}

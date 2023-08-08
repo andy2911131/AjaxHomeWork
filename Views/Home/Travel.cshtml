@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Travel";
+}
+
+<h1>旅行</h1>
+
+<div class="card-container">
+
+</div>
+
+@section Scripts {
+    <script src="~/datas/travel.js"></script>
+    <script>
+        $(function () {
+            console.log(spots);
+
+            const cardContainer = $('.card-container');
+
+            spots.CommonFormat.Section.forEach(section => {
+                const { stitle, xbody, file } = section;
+                const imageSrc = file.img[0].text; 
+
+                const cardHtml = `
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="${imageSrc}" alt="${stitle}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${stitle}</h5>
+                                    <p class="card-text">${xbody}</p>                         
+                                </div>
+                            </div>
+                        `;
+
+                cardContainer.append(cardHtml);
+            });
+        });
+    </script>
+}
+
+@section Styles{
+
+}
