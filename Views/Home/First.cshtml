@@ -56,7 +56,8 @@
             //myDiv.innerHTML = "Button Click"
           
             //步驟二對伺服器發出要求(Request)
-            xhr.open('GET', '/api/index');
+            //xhr.open('GET', '/api/index');
+            xhr.open('GET','@Url.Content("/api/index")')
             xhr.timeout = 3000;
             xhr.send();
         

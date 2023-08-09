@@ -5,7 +5,7 @@
 
 <h1>Regestier</h1>
 
-<form id="form1" action="~/api/getdemo" method="post">
+<form id="form1"  method="post">
     <label for="name">username</label>
     <input type="text" id="name" name="Name" />
     <div id="NameMessage"></div>
@@ -31,37 +31,45 @@
     const txtName =document.querySelector('#name');
     //const txtAge = document.querySelector('#age');
     const nameMessage = document.querySelector('#NameMessage');
-
-        
-        txtName.addEventListener('blur', () => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/CheckAccount');       
-            const formData = new FormData();
-            formData.append('Name', nameInput.value);
-            xhr.send(formData);
-
-            xhr.addEventListener('load', () => {
-                const data = xhr.responseText;
-                nameMessage.innerHTML = data;
-            });
-        });
+    const formData =new FormData(document.querySelector('#form1');
 
 
-    btn.addEventListener('click',event =>{
-    event.preventDefault();
 
-    const xhr =new XMLHttpRequest();
-            xhr.open('POST', '/api/Regestier');
-    //xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
-    //xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
-            const formdata = new FormData(document.querySelector('#form1'));
-            xhr.send(formdata);
 
-    xhr.addEventListener('load',()=>{
-    const data =xhr.responseText;
-    div.innerHTML=data;
-    })
-    })
+        btn.addEventListener('click', event => {
+            event.preventDefault(); //防止預設行為的發生
+
+            //改用 fetch 傳送FormData到server端
+            const formData = new FormData(document.querySelector('#form1'));
+            fetch('@Url.Content("/api/Regestier")', {
+                body: formData,
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("新增成功")
+                        location.href = '@Url.Content("/members")'
+                    } else {
+                        alert("有錯誤!!")
+                    }
+                })
+
+        })
+
+    //const xhr =new XMLHttpRequest();
+    //        xhr.open('POST', '@Url.Content("/api/Regestier")');
+    ////xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+    ////xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
+    //        const formdata = new FormData(document.querySelector('#form1'));
+    //        xhr.send(formdata);
+
+    //xhr.addEventListener('load',()=>{
+    //const data =xhr.responseText;
+    //div.innerHTML=data;
+    //})
+    //})
+
+
 
 </script>
 }

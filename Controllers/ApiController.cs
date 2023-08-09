@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MSIT150Site.Models;
 using MSIT150Site.ViewModels;
+using System.Security.Policy;
 
 namespace MSIT150Site.Controllers
 {
@@ -16,7 +17,7 @@ namespace MSIT150Site.Controllers
         }
         public IActionResult Index()
         {
-            System.Threading.Thread.Sleep(5000); //睡5秒鐘，再往下執行
+          /*  System.Threading.Thread.Sleep(5000);*/ //睡5秒鐘，再往下執行
             return Content("Hello Ajax!!");
         }
 
@@ -65,6 +66,35 @@ namespace MSIT150Site.Controllers
             {
                 return Content("OK");
             }
+        }
+
+        //二進位讀資料
+        public IActionResult GetImageByte(int id = 1)
+        {
+            Members? member = _context.Members.Find(id);
+            byte[]? img = member.FileData;
+            return File(img, "image/jpeg");
+
+        }
+
+        public IActionResult Cities() 
+        {
+        var cities =_context.Address.Select(x => x.City).Distinct();
+
+            return Json(cities);
+        }
+        public IActionResult Districts(string city) 
+        {
+        var disricts=_context.Address.Where(x=>x.City==city).Select(x=>x.SiteId).Distinct();
+
+            return Json(disricts);
+        }
+
+        public IActionResult Roads(string Siteid) 
+        {
+            var roads = _context.Address.Where(a => a.SiteId == Siteid).Select(c => c.Road).Distinct();
+
+            return Json(roads);
         }
     }
 }

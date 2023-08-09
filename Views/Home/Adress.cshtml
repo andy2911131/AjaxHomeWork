@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "Adress";
+}
+
+<h1>Adress</h1>
+<select id="selectCity"></select>
+<select id="selectlDistricts"></select>
+<select id="selectRoad"></select>
+<div id="div1"></div>
+
+@section Styles
+{
+
+}
+
+@section Scripts
+{
+    <script>
+        const selCity = document.querySelector('#selectCity');
+        const selDistricts = document.querySelector('#selectlDistricts');
+        const selRoad = document.querySelector('#selectRoad');
+        const theDiv =document.querySelector('#div1');
+
+        function loadCity()
+        {
+        const xhr =new XMLHttpRequest();
+        xhr.open('GET','@Url.Content("/api/cities")');
+        xhr.send();
+        xhr.addEventListener('load',()=>{
+        
+        const datas =JSON.parse(xhr.responseText);
+        const cities =datas.map(city=>`<option value = '${city}'>${city}</option>`)
+        selCity.innerHTML =cities.join("");
+                loadDistrict()
+        })
+
+           
+        }
+
+        function loadDistrict() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `@Url.Content("/api/Districts")?city=${selCity.value}`);
+            xhr.send();
+            xhr.addEventListener('load', () => {
+                const datas = JSON.parse(xhr.responseText);
+                const districts = datas.map(district => `<option value ='${district}'>${district}</option>`)
+                selDistricts.innerHTML = districts.join("");
+                loadRoad()
+            })
+        }
+
+        function loadRoad() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `@Url.Content("/api/Roads")?Siteid=${selDistricts.value}`);
+            xhr.send();
+            xhr.addEventListener('load', () => {
+
+                const datas = JSON.parse(xhr.responseText);
+                const Roads = datas.map(road => `<option value = '${road}'>${road}</option>`)
+                selRoad.innerHTML = Roads.join("");
+
+                show();
+            })
+        }
+
+        loadCity()
+     
+        selCity.addEventListener('change',()=>{
+
+         
+            //  theDiv.textContent = `${selCity.options[selCity.selectedIndex].text}-${selCity.options[selCity.selectedIndex].value} `
+            theDiv.textContent = selCity.value;
+            loadDistrict();
+           
+        })
+
+        selDistricts.addEventListener('change', () => {
+           
+            theDiv.textContent = selDistricts.value;
+          
+      loadRoad();
+           
+     
+        })
+
+        selRoad.addEventListener('change', show)
+
+        function show() {
+            theDiv.textContent = `${selDistricts.value} ${selRoad.value}`;
+        }
+    </script>
+}

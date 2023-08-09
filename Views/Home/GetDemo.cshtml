@@ -15,8 +15,10 @@
     <script>
         const xhr =new XMLHttpRequest();
 
-        
-        xhr.open('Get','/api/GetDemo');
+        const name = "Jack";
+        const age = 25;
+          //xhr.open('GET', '@Url.Content("/api/getdemo")?name=Mary&age=28')
+        xhr.open('GET', `@Url.Content("/api/getdemo")?name=${name}&age=${age}`)
         xhr.send();
 
         xhr.addEventListener("load",()=>{
