@@ -6,7 +6,8 @@
 <h1>Fetch</h1>
 <h3 id="myH"></h3>
 <ul id="ul1"></ul>
-
+<img id="img"/>
+<input type="file" name="file"/>
 @section Scripts
 {
 <script>
@@ -29,7 +30,42 @@
             document.querySelector('#ul1').innerHTML =lis.join("");
             })
 
-        
+      
+
+        //function loadJSON(){
+        //    fetch('@Url.Content("/api/Cities")')
+        //        .then(response => response.json())
+        //        .then(data => {
+        //            const lis = data.map(city => `<li>${city}</li>`)
+        //            document.querySelector('#ul1').innerHTML = lis.join("");
+        //        })
+            async function loadJSON() {
+                const response=await fetch('@Url.Content("/api/Cities")')
+                const datas =await response.json();
+            const lis = data.map(city => `<li>${city}</li>`)
+            document.querySelector('#ul1').innerHTML = lis.join("");
+        }
+
+        //function loadimg(){
+        //    fetch('@Url.Content("/api/GetImageByte/2")')
+        //        .then(response => response.blob())
+        //        .then(datas => {
+        //            const myimg = document.querySelector('#img');
+
+        //            myimg.src = URL.createObjectURL(datas);
+
+        //        })
+        //}
+
+        async function loadimg(){
+            const response=await fetch('@Url.Content("/api/GetImageByte/2")')
+            const datas = await response.blob()
+            const img = document.querySelector('#img');
+            img.src = URL.createObjectURL(datas);
+        }
+
+        loadimg();
+        loadJSON();
         </script>
 
 }

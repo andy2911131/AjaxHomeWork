@@ -30,26 +30,29 @@ namespace MSIT150Site.Controllers
             return Content($"HEllo, {cUser.name}，你今年{cUser.age}歲");
         }
 
-        public IActionResult Regestier(Members members,IFormFile file) 
+        public IActionResult Register(Members members,IFormFile file) 
         {
-          
+            
 
-           
 
+            //存路徑
             string filePath = Path.Combine(_host.WebRootPath, "images", file.FileName);
 
-            using (var filestream = new FileStream(filePath, FileMode.Create)) 
+            using (var filestream = new FileStream(filePath, FileMode.Create))
             {
-            file.CopyTo(filestream);
-            }
-            byte[]? imgByte = null;
-            using (var memoryStream = new MemoryStream()) 
-            {
-                file.CopyTo(memoryStream);
-                imgByte = memoryStream.ToArray();
+                file.CopyTo(filestream);
             }
             members.FileName = file.FileName;
-            members.FileData= imgByte;
+
+            ////存二進位
+            //byte[]? imgByte = null;
+            //using (var memoryStream = new MemoryStream())
+            //{
+            //    file.CopyTo(memoryStream);
+            //    imgByte = memoryStream.ToArray();
+            //}
+
+            //members.FileData = imgByte;
 
             _context.Members.Add(members);
             _context.SaveChanges();

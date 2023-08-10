@@ -5,18 +5,32 @@
 
 <h1>CITY</h1>
 <select id="City"></select>
+<span id="span1"></span>
 @section Scripts
 {
 <script>
         const cities = ["台北市", "新北市", "桃園市", "台中市", "台南市", "高雄市"];
         const cityselect=document.querySelector('#City');
+        const span =document.querySelector('#span1');
 
-        for(let i=0;i<cities.length;i++)
+        function loadCity()
+        {
+         for(let i=0;i<cities.length;i++)
         {
         const option =document.createElement("option");
             option.value = cities[i];
             option.textContent = cities[i];
             cityselect.appendChild(option);
+
+                show();
+        }
+        }
+        loadCity()
+
+        cityselect.addEventListener('change', show)
+
+        function show() {
+            span1.textContent = `${cityselect.value}`;
         }
 </script>
 }

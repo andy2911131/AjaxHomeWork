@@ -22,47 +22,76 @@
         const selRoad = document.querySelector('#selectRoad');
         const theDiv =document.querySelector('#div1');
 
-        function loadCity()
-        {
-        const xhr =new XMLHttpRequest();
-        xhr.open('GET','@Url.Content("/api/cities")');
-        xhr.send();
-        xhr.addEventListener('load',()=>{
+        //function loadCity()
+        //{
+        //const xhr =new XMLHttpRequest();
+        //xhr.open('GET','@Url.Content("/api/cities")');
+        //xhr.send();
+        //xhr.addEventListener('load',()=>{
         
-        const datas =JSON.parse(xhr.responseText);
-        const cities =datas.map(city=>`<option value = '${city}'>${city}</option>`)
-        selCity.innerHTML =cities.join("");
-                loadDistrict()
-        })
+        //const datas =JSON.parse(xhr.responseText);
+        //const cities =datas.map(city=>`<option value = '${city}'>${city}</option>`)
+        //selCity.innerHTML =cities.join("");
+        //        loadDistrict()
+        //})
 
            
+        //}
+
+        async function loadCity()
+        {
+            const response =await fetch('@Url.Content("/api/cities")')
+            const datas = await response.json();
+            const cities = datas.map(city => `<option value = '${city}'>${city}</option>`)
+            selCity.innerHTML = cities.join("");
+            loadDistrict();
         }
 
-        function loadDistrict() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `@Url.Content("/api/Districts")?city=${selCity.value}`);
-            xhr.send();
-            xhr.addEventListener('load', () => {
-                const datas = JSON.parse(xhr.responseText);
-                const districts = datas.map(district => `<option value ='${district}'>${district}</option>`)
-                selDistricts.innerHTML = districts.join("");
-                loadRoad()
-            })
+        //function loadDistrict() {
+        //    const xhr = new XMLHttpRequest();
+        //    xhr.open('GET', `@Url.Content("/api/Districts")?city=${selCity.value}`);
+        //    xhr.send();
+        //    xhr.addEventListener('load', () => {
+        //        const datas = JSON.parse(xhr.responseText);
+        //        const districts = datas.map(district => `<option value ='${district}'>${district}</option>`)
+        //        selDistricts.innerHTML = districts.join("");
+        //        loadRoad()
+        //    })
+        //}
+
+        async function loadDistrict()
+        {
+        const response= await fetch(`@Url.Content("/api/Districts")?city=${selCity.value}`)
+        const datas = await response.json();
+            const districts = datas.map(district => `<option value ='${district}'>${district}</option>`)
+            selDistricts.innerHTML = districts.join("");
+           loadRoad()
         }
 
-        function loadRoad() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `@Url.Content("/api/Roads")?Siteid=${selDistricts.value}`);
-            xhr.send();
-            xhr.addEventListener('load', () => {
+        //function loadRoad() {
+        //    const xhr = new XMLHttpRequest();
+        //    xhr.open('GET', `@Url.Content("/api/Roads")?Siteid=${selDistricts.value}`);
+        //    xhr.send();
+        //    xhr.addEventListener('load', () => {
 
-                const datas = JSON.parse(xhr.responseText);
-                const Roads = datas.map(road => `<option value = '${road}'>${road}</option>`)
-                selRoad.innerHTML = Roads.join("");
+        //        const datas = JSON.parse(xhr.responseText);
+        //        const Roads = datas.map(road => `<option value = '${road}'>${road}</option>`)
+        //        selRoad.innerHTML = Roads.join("");
 
-                show();
-            })
+        //        show();
+        //    })
+        //}
+
+        async function loadRoad()
+        {
+            const response =await fetch(`@Url.Content("/api/Roads")?Siteid=${selDistricts.value}`);
+            const datas =await response.json();
+            const Roads = datas.map(road => `<option value = '${road}'>${road}</option>`)
+            selRoad.innerHTML = Roads.join("");
+            show();
         }
+
+
 
         loadCity()
      

@@ -51,7 +51,7 @@
             <td>
                @* 二進位*@
                @* @Html.DisplayFor(modelItem => item.FileData)*@
-                    <img src="@Url.Action("GetImageByte","api",new{id=item.MemberId})" />
+               @*     <img src="@Url.Action("GetImageByte","api",new{id=item.MemberId})" />*@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MemberId">Edit</a> |
