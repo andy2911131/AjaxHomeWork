@@ -12,7 +12,16 @@ namespace MSIT150Site.Controllers
         {
             _logger = logger;
         }
-
+        public IActionResult JQuery() 
+        {
+        return View();
+        }
+        public IActionResult History() 
+        {
+            
+            return View(); 
+        
+        }
         public IActionResult Index()
         {
           
@@ -63,6 +72,17 @@ namespace MSIT150Site.Controllers
         public IActionResult Fetch()
         {
             return View();
+        }
+
+        public IActionResult Partial() 
+        {
+            return PartialView();
+        }
+
+        public IActionResult Partial2()
+        {
+            ViewBag.MESSAGE = "來自action";
+            return PartialView();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
